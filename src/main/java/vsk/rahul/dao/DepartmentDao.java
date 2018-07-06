@@ -1,0 +1,100 @@
+package vsk.rahul.dao;
+
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+
+import vsk.rahul.model.Department;
+
+public class DepartmentDao implements DaoInterface<Department, Integer> {
+
+	private Session currentSession;
+	
+	private Transaction currentTransaction;
+
+	public Session openCurrentSession() {
+		currentSession = getSessionFactory().openSession();
+		return currentSession;
+	}
+
+	public Session openCurrentSessionwithTransaction() {
+		currentSession = getSessionFactory().openSession();
+		currentTransaction = currentSession.beginTransaction();
+		return currentSession;
+	}
+	
+	public void closeCurrentSession() {
+		currentSession.close();
+	}
+	
+	public void closeCurrentSessionwithTransaction() {
+		currentTransaction.commit();
+		currentSession.close();
+	}
+	
+	private static SessionFactory getSessionFactory() {
+		Configuration configuration = new Configuration().configure();
+		configuration.addAnnotatedClass(Department.class);
+		StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
+				.applySettings(configuration.getProperties());
+		SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
+		return sessionFactory;
+	}
+
+	public Session getCurrentSession() {
+		return currentSession;
+	}
+
+	public void setCurrentSession(Session currentSession) {
+		this.currentSession = currentSession;
+	}
+
+	public Transaction getCurrentTransaction() {
+		return currentTransaction;
+	}
+
+	public void setCurrentTransaction(Transaction currentTransaction) {
+		this.currentTransaction = currentTransaction;
+	}
+	
+	@Override
+	public void persist(Department entity) {
+		currentSession.save(entity);
+		//currentSession.flush();
+	}
+
+	@Override
+	public void update(Department entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Department findById(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(Department entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Department> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteAll() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
