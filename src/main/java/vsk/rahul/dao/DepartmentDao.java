@@ -64,37 +64,32 @@ public class DepartmentDao implements DaoInterface<Department, Integer> {
 	@Override
 	public void persist(Department entity) {
 		currentSession.save(entity);
-		//currentSession.flush();
 	}
 
 	@Override
 	public void update(Department entity) {
-		// TODO Auto-generated method stub
-		
+		currentSession.update(entity);
 	}
 
 	@Override
 	public Department findById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		return currentSession.find(Department.class, id);
 	}
 
 	@Override
 	public void delete(Department entity) {
-		// TODO Auto-generated method stub
-		
+		currentSession.delete(entity);
 	}
 
 	@Override
 	public List<Department> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return currentSession.createQuery("from Department").list();
 	}
 
 	@Override
 	public void deleteAll() {
-		// TODO Auto-generated method stub
-		
+		List<Department> list = findAll();
+		list.stream().forEach(e -> delete(e));
 	}
 
 }
